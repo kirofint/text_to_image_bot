@@ -1,8 +1,9 @@
 {
-  "name": "template_name",
+  "name": "text_to_picture_bot",
   "private": true,
   "license": "MIT",
   "author": "kirofint <kirofint@gmail.com>",
+  "repository": "https://github.com/kirofint/text_to_picture_bot",
   "scripts": {
     "serve": "yarn build-ts && concurrently -k -i -p \"[{name}]\" -n \"Node,TypeScript\" -c \"yellow.bold,cyan.bold\" \"yarn watch-js\" \"yarn watch-ts\"",
     "watch-ts": "tsc -w --skipLibCheck",
