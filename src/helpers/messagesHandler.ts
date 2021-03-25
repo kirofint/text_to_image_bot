@@ -1,6 +1,6 @@
 import { Telegraf, Context, Markup } from 'telegraf'
 import { getPictureUrl } from '@/api'
-import { randomy } from './methods'
+import { randomy, buttonCounter } from './methods'
 import { errLogger } from './logger'
 
 const LIKES = ["❤️", "🧡", "💛", "💚", "💙", "💜", "🖤", "🤍", "🤎"]
@@ -13,6 +13,7 @@ export function messagesHandler(bot: Telegraf<Context>) {
                         .match(/[a-zA-Z\s]+/g)
                         .join(' ')
                         .replace(/\s{2,}/g, ' ')
+                        .trim()
 
     regexmsg.length && getPictureUrl(regexmsg).then((res: string) => {
       res && ctx.replyWithPhoto(res, {
@@ -27,12 +28,6 @@ export function messagesHandler(bot: Telegraf<Context>) {
     })
   })
 
-  bot.action('like', async (ctx, next) => {
-    ctx.reply('👍')
-    next()
-  })
-  bot.action('dislike', async (ctx, next) => {
-    ctx.reply('👎🏻')
-    next()
-  })
+  bot.action('like', buttonCounter)
+  bot.action('dislike', buttonCounter)
 }
