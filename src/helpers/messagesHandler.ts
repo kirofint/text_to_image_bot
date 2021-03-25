@@ -7,8 +7,9 @@ const LIKES = ["❤️", "🧡", "💛", "💚", "💙", "💜", "🖤", "🤍",
 const DISLIKES = ["👎🏻", "👎🏾", "💩", "😐", "😬", "💀"]
 
 export function messagesHandler(bot: Telegraf<Context>) {
-  bot.on('message', ctx => {
+  bot.on('message', (ctx, next) => {
     const msg = ctx.message?.caption || ctx.message?.text
+    if (!msg) return next()
     const regexmsg = msg.replace(/(?:https?):\/\/[\n\S]+/g, '')
                         .match(/[a-zA-Z\s]+/g)
                         .join(' ')
