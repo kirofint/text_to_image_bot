@@ -1,5 +1,6 @@
 import { Telegraf, Context, Markup } from 'telegraf'
 import { getPictureUrl } from '@/api'
+import { isGroup } from '@/middlewares/botChecks'
 import { randomy, buttonCounter } from './methods'
 import { errLogger } from './logger'
 
@@ -31,4 +32,11 @@ export function messagesHandler(bot: Telegraf<Context>) {
 
   bot.action('like', buttonCounter)
   bot.action('dislike', buttonCounter)
+}
+
+export function greetingMessage (bot: Telegraf<Context>) {
+  bot.on('new_chat_members', isGroup, ctx => {
+    if (ctx.message.new_chat_members[0].id === ctx.botInfo.id)
+      ctx.replyWithHTML( ctx.translate('greeting') )
+  })
 }
