@@ -5,7 +5,7 @@ export async function getPictureUrl(text: string) {
   try {
     const { data } = await axios.post('https://api.deepai.org/api/text2img', text, {
       headers: {
-        'api-key': '841b0471-3411-41b2-9040-6076dc4f95b9'
+        'api-key': process.env.API_KEY
       }
     })
 
