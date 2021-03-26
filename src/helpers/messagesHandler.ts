@@ -11,15 +11,13 @@ export function messagesHandler(bot: Telegraf<Context>) {
   bot.on('message', (ctx, next) => {
     const msg = ctx.message?.caption || ctx.message?.text
     if (!msg) return next()
-    const regexmsg = msg.replace(/(?:https?):\/\/[\n\S]+/g, '')
-                        .match(/[a-zA-Z\s]+/g)
-                        .join(' ')
-                        .replace(/\s{2,}/g, ' ')
-                        .trim()
-
-    regexmsg.length && getPictureUrl(regexmsg).then((res: string) => {
+    const regexmsg = msg.replace(/(?:https?):\/\/[\n\S]+/g, '').match(/[a-zA-Z\s]+/g)
+    if (!regexmsg) return next()
+    const edited_msg = regexmsg.join(' ').replace(/\s{2,}/g, ' ').trim()
+    
+    edited_msg.length && getPictureUrl(edited_msg).then((res: string) => {
       res && ctx.replyWithPhoto(res, {
-          caption: `_Я думаю это подойдёт под описание_: *${regexmsg}*`,
+          caption: `_Я думаю это подойдёт под описание_: *${edited_msg}*`,
           parse_mode: 'MarkdownV2',
           reply_to_message_id: ctx.message.message_id,
           reply_markup: Markup.inlineKeyboard([
