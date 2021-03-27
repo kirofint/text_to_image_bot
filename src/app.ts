@@ -7,6 +7,7 @@ import { errLogger } from './helpers/logger'
 import { commandRun } from './commands/help'
 import { commandSettings } from './commands/settings'
 import { messagesHandler } from './helpers/messagesHandler'
+import { greetingMessage } from './helpers/messagesHandler'
 
 // Middlewares
 bot.use(chatHandler)
@@ -15,6 +16,7 @@ commandRun(bot)
 commandSettings(bot)
 // Helpers
 messagesHandler(bot)
+greetingMessage(bot)
 
 bot.catch(errLogger)
 bot.launch()
