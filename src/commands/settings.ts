@@ -1,4 +1,5 @@
 import { Telegraf, Context, Markup } from "telegraf"
+import { removeMsgFrom, isGroup } from "@/middlewares/botChecks"
 import buttonClicksLimiter from "@/middlewares/buttonClicksLimiter"
 
 export function commandSettings (bot: Telegraf<Context>) {
@@ -17,7 +18,17 @@ export function commandSettings (bot: Telegraf<Context>) {
     ctx.reply('', choice_setting_markup(ctx))
   })
 
+  bot.action('toogleImageCaption', buttonClicksLimiter, ctx => { 
+    ctx.answerCbQuery(String(ctx.translate(
+      ctx.dbchat.image_caption = !ctx.dbchat.image_caption
+    )))
+    ctx.updateProperty('image_caption')
+    ctx.editMessageText('', choice_setting_markup(ctx))
+  })
+
   bot.action('removeMarkup', ctx => ctx.deleteMessage())
+  bot.action('languageBack', buttonClicksLimiter, ctx => {
+    ctx.editMessageText('', choice_setting_markup(ctx))
   })
 
 }
