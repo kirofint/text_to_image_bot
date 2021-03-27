@@ -2,6 +2,7 @@ import { Context } from "telegraf"
 import { findOrCreate, updateChat } from '@/models/Chat'
 import { errLogger } from '@/helpers/logger'
 import { languages } from '@/helpers/language'
+
 export default async (ctx: Context, next: () => void) => {
   const data = await findOrCreate(ctx.chat.id)
   ctx.dbchat = data
@@ -15,6 +16,9 @@ export default async (ctx: Context, next: () => void) => {
       return 'Something wrong with translate 😒'
     }
     return word_value
+  }
+  ctx.updateProperty = async (prop: string) => {
+    updateChat(data, prop)
   }
 
   next()

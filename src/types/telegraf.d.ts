@@ -9,5 +9,6 @@ declare module 'telegraf' {
     dbchat: DocumentType<Chat>
     session: SessionData
     translate: Function
+    updateProperty: Function
   }
 }
