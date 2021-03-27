@@ -1,8 +1,12 @@
 import { DocumentType } from '@typegoose/typegoose'
 import { Chat } from '@/models/Chat'
 
+interface SessionData {
+  buttonClicksCounter?: Object
+}
 declare module 'telegraf' {
   export class Context {
-    public dbchat: DocumentType<Chat>
+    dbchat: DocumentType<Chat>
+    session: SessionData
   }
 }
