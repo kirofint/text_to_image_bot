@@ -10,10 +10,9 @@ export async function getPictureUrl(text: string) {
     })
 
     const response = data.output_url
-    if (!response)
-        throw new Error('Не удалось получить ссылку на изображение')
+    if (!response) throw new Error('Some error with API')
+
     return response
-    
   } catch (error) {
     errLogger(error)
     return false
