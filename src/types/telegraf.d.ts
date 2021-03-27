@@ -8,5 +8,6 @@ declare module 'telegraf' {
   export class Context {
     dbchat: DocumentType<Chat>
     session: SessionData
+    translate: Function
   }
 }
