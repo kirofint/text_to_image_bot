@@ -16,7 +16,8 @@ const ru = {
   setting_menu_item_language: "Изменить язык",
 
   language_choice: "Выберите новый язык",
-  language_selected: "Ура, говорю по-русски!"
+  language_selected: "Ура, говорю по-русски!",
+  language_already_selected: "Русский язык уже выбран",
 }
 
 const en = {
@@ -38,6 +39,7 @@ const en = {
 
   language_choice: "Please, choose a language",
   language_selected: "Yay, I will speak English!",
+  language_already_selected: "English language has already selected",
 }
 
 export const languages = { ru, en }

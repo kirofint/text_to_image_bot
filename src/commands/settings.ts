@@ -35,8 +35,31 @@ export function commandSettings (bot: Telegraf<Context>) {
   })
 
   bot.action('removeMarkup', ctx => ctx.deleteMessage())
+
+  /* Language settings */
+  bot.action('changeLanguage', buttonClicksLimiter, ctx => {
+    ctx.editMessageText(ctx.translate('language_choice'), {
+      reply_markup: Markup.inlineKeyboard([
+        Markup.callbackButton('<<', 'languageBack'),
+        Markup.callbackButton('🇺🇸', 'en'),
+        Markup.callbackButton('🇷🇺', 'ru')
+      ])
+    })
+  })
+
   bot.action('languageBack', buttonClicksLimiter, ctx => {
     ctx.editMessageText('', choice_setting_markup(ctx))
   })
 
+  bot.action(['ru','en'], ctx => {
+    const current_lang = ctx.dbchat.language
+    const new_lang = ctx.callbackQuery.data
+    if (current_lang !== new_lang) {
+      ctx.dbchat.language = new_lang
+      ctx.updateProperty('language')
+      ctx.editMessageText(ctx.translate('language_selected'))
+    } else
+      ctx.answerCbQuery(ctx.translate('language_already_selected'))
+  })
+  /** Language settings **/
 }
