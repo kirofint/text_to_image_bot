@@ -26,6 +26,14 @@ export function commandSettings (bot: Telegraf<Context>) {
     ctx.editMessageText('', choice_setting_markup(ctx))
   })
 
+  bot.action('needRating', buttonClicksLimiter, ctx => {
+    ctx.answerCbQuery(String(ctx.translate(
+      ctx.dbchat.rating_buttons = !ctx.dbchat.rating_buttons
+    )))
+    ctx.updateProperty('rating_buttons')
+    ctx.editMessageText('', choice_setting_markup(ctx))
+  })
+
   bot.action('removeMarkup', ctx => ctx.deleteMessage())
   bot.action('languageBack', buttonClicksLimiter, ctx => {
     ctx.editMessageText('', choice_setting_markup(ctx))
