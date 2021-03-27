@@ -1,6 +1,7 @@
 import { Telegraf, Context, Markup } from 'telegraf'
 import { getPictureUrl } from '@/api'
 import { isGroup } from '@/middlewares/botChecks'
+import buttonClicksLimiter from '@/middlewares/buttonClicksLimiter'
 import { randomy, buttonCounter } from './methods'
 import { errLogger } from './logger'
 
@@ -28,8 +29,8 @@ export function messagesHandler(bot: Telegraf<Context>) {
     })
   })
 
-  bot.action('like', buttonCounter)
-  bot.action('dislike', buttonCounter)
+  bot.action('like', buttonClicksLimiter, buttonCounter)
+  bot.action('dislike', buttonClicksLimiter, buttonCounter)
 }
 
 export function greetingMessage (bot: Telegraf<Context>) {

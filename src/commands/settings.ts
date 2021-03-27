@@ -1,4 +1,5 @@
 import { Telegraf, Context, Markup } from "telegraf"
+import buttonClicksLimiter from "@/middlewares/buttonClicksLimiter"
 
 export function commandSettings (bot: Telegraf<Context>) {
   const choice_setting_markup = (ctx: Context) => ({
