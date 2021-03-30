@@ -33,6 +33,8 @@ export function messagesHandler(bot: Telegraf<Context>) {
   bot.action('like', buttonClicksLimiter, buttonCounter)
   bot.action('dislike', buttonClicksLimiter, buttonCounter)
 }
+export function nameFeedback (bot: Telegraf<Context>) {
+}
 
 export function greetingMessage (bot: Telegraf<Context>) {
   bot.on('new_chat_members', isGroup, ctx => {

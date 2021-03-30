@@ -6,7 +6,7 @@ import { bot } from './helpers/bot'
 import { errLogger } from './helpers/logger'
 import { commandRun } from './commands/help'
 import { commandSettings } from './commands/settings'
-import { messagesHandler } from './helpers/messagesHandler'
+import { messagesHandler, nameFeedback } from './helpers/messagesHandler'
 import { greetingMessage } from './helpers/messagesHandler'
 
 // Middlewares
@@ -16,6 +16,7 @@ commandRun(bot)
 commandSettings(bot)
 // Helpers
 messagesHandler(bot)
+nameFeedback(bot)
 greetingMessage(bot)
 
 bot.catch(errLogger)
