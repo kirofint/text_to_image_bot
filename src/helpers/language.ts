@@ -2,6 +2,7 @@ const ru = {
   true: "Вкл",
   false: "Выкл",
 
+  bot_name: "гарик",
   greeting: "Я буду присылать время от времени сгенерированные пикчи, в зависимости от текста который вы пишите (понимаю онли инглиш)\nМои настройки меняются тут => /settings_ttp", 
   
   image_caption: "Я думаю что это",
@@ -24,6 +25,7 @@ const en = {
   true: "On",
   false: "Off",
 
+  bot_name: "garik",
   greeting: "Hi, I will send pictures similar to what you write in the chat (my guess 😆)\nYou can change my settings by command /settings_ttp",
   
   image_caption: "I think, it's",
