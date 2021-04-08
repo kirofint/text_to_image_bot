@@ -38,7 +38,6 @@ jobs:
       run: |
           docker stop text_to_picture_bot || true
           docker rm text_to_picture_bot || true
-        fi
     - name: Docker start
       timeout-minutes: 180
       run: |
