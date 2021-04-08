@@ -42,6 +42,7 @@ jobs:
       timeout-minutes: 180
       run: |
         docker run -d \
+        --link kirill_mongo:mongo \
         -e API_KEY=${{ secrets.API_KEY }} \
         -e TOKEN=${{ secrets.TOKEN }} \
         -e MONGO=${{ secrets.MONGO }} \
