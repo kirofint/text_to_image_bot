@@ -38,4 +38,4 @@ jobs:
      steps: 
        docker_start:
        run: |
-          docker  run ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPOSITORYNAME }}:${{ github.sha }} 
+          echo "hui"
