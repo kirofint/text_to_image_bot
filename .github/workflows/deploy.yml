@@ -6,7 +6,7 @@ on:
       - docker
 
 jobs:
-  docker:
+  docker_push:
     runs-on: ubuntu-latest
     steps:
       -
@@ -30,4 +30,12 @@ jobs:
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPOSITORYNAME }}:${{ github.sha }} 
       -
         name: Image digest
-        run: echo ${{ steps.docker_build.outputs.digest }}
+        run: echo ${{ steps.docker_build.outputs.digest }}  
+ 
+   docker_run:
+     runs-on: self-hosted
+     needs: docker_push
+     steps: 
+       docker_start:
+       run: |
+          docker  run ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPOSITORYNAME }}:${{ github.sha }} 
