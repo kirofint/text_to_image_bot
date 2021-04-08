@@ -1,6 +1,12 @@
 name: ci
 
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Comments
+        default: node
+        required: false
 
 jobs:
   docker_push:
