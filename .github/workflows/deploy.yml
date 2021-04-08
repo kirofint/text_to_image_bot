@@ -31,11 +31,11 @@ jobs:
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}  
- 
-   docker_run:
-     runs-on: self-hosted
-     needs: docker_push
-     steps: 
-       docker_start:
-       run: |
-          echo "hui"
+
+  docker_run:
+    runs-on: self-hosted
+    needs: docker_push
+    steps:
+    - name: Docker start
+      run: |
+        echo "hui"
