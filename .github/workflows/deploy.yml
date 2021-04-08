@@ -36,7 +36,9 @@ jobs:
     - name: Remove previous version
       timeout-minutes: 120
       run: |
-        [ ! "$(docker ps -a | grep <text_to_picture_bot>)" ] && (docker stop text_to_picture_bot docker rm text_to_picture_bot)
+        "$(docker ps -a | grep <text_to_picture_bot>)" &&
+        docker stop text_to_picture_bot 
+        docker rm text_to_picture_bot
     - name: Docker start
       timeout-minutes: 180
       run: |
