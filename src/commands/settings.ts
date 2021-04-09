@@ -38,19 +38,19 @@ export function commandSettings (bot: Telegraf<Context>) {
 
   bot.action('removeMarkup', ctx => ctx.deleteMessage())
 
+	bot.action('backToMainMenu', buttonClicksLimiter, ctx => {
+		ctx.editMessageText('', choice_setting_markup(ctx))
+  })
+
   /* Language settings */
   bot.action('changeLanguage', buttonClicksLimiter, ctx => {
     ctx.editMessageText(ctx.translate('language_choice'), {
       reply_markup: Markup.inlineKeyboard([
-        Markup.callbackButton('<<', 'languageBack'),
+				Markup.callbackButton('<<', 'backToMainMenu'),
         Markup.callbackButton('🇺🇸', 'en'),
         Markup.callbackButton('🇷🇺', 'ru')
       ])
     })
-  })
-
-  bot.action('languageBack', buttonClicksLimiter, ctx => {
-    ctx.editMessageText('', choice_setting_markup(ctx))
   })
 
   bot.action(['ru','en'], ctx => {
