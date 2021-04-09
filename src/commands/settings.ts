@@ -11,8 +11,8 @@ export function commandSettings (bot: Telegraf<Context>) {
 				Markup.callbackButton('✖️ '+ctx.translate('setting_menu_item_nothing'), 'removeMarkup'),
 				Markup.callbackButton('👍👎 '+ctx.translate('setting_menu_item_rating')+`: ${ctx.translate(ctx.dbchat.rating_buttons)}`, 'needRating', !isGroup(ctx, () => true)),
 				Markup.callbackButton('🤔 '+ctx.translate('setting_menu_item_caption')+`: ${ctx.translate(ctx.dbchat.image_caption)}`, 'toogleImageCaption'),
-				Markup.callbackButton('🤔 '+ctx.translate('setting_menu_item_caption')+`: ${ctx.translate(ctx.dbchat.image_caption)}`, 'toogleImageCaption'),
 				Markup.callbackButton('🌐 '+ctx.translate('setting_menu_item_language'), 'changeLanguage'),
+				Markup.callbackButton('⏳ '+ctx.translate('setting_menu_item_autodelete'), 'setAutoRemoveTimeout'),
 			], { columns: 2 })
 	})
 
@@ -63,5 +63,15 @@ export function commandSettings (bot: Telegraf<Context>) {
     } else
       ctx.answerCbQuery(ctx.translate('language_already_selected'))
   })
-  /** Language settings **/
+	/** Language settings **/
+
+	/* Auto remove timeout settings */
+	bot.action('setAutoRemoveTimeout', buttonClicksLimiter, ctx => {
+		ctx.editMessageText(ctx.translate('autoremover_choice'), {
+      reply_markup: Markup.inlineKeyboard([
+				Markup.callbackButton('<<', 'backToMainMenu'),
+      ])
+    })
+	})
+	/** Auto remove timeout settings **/
 }
