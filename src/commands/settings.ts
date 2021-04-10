@@ -1,24 +1,26 @@
-import { Telegraf, Context, Markup } from "telegraf"
+import { Telegraf, Context, Markup, Stage } from "telegraf"
 import { removeMsgFrom, isGroup } from "@/middlewares/botChecks"
 import buttonClicksLimiter from "@/middlewares/buttonClicksLimiter"
 
 export function commandSettings (bot: Telegraf<Context>) {
+
   const choice_setting_markup = (ctx: Context) => ({
-      text: ctx.translate('setting_menu_title'),
-      reply_markup:
-        Markup.inlineKeyboard([
-          Markup.callbackButton('✖️ '+ctx.translate('setting_menu_item_nothing'), 'removeMarkup'),
-          Markup.callbackButton('👍👎 '+ctx.translate('setting_menu_item_rating')+`: ${ctx.translate(ctx.dbchat.rating_buttons)}`, 'needRating', !isGroup(ctx, () => true)),
-          Markup.callbackButton('🤔 '+ctx.translate('setting_menu_item_caption')+`: ${ctx.translate(ctx.dbchat.image_caption)}`, 'toogleImageCaption'),
-          Markup.callbackButton('🌐 '+ctx.translate('setting_menu_item_language'), 'changeLanguage'),
-        ], { columns: 2 })
-    })
+		text: ctx.translate('setting_menu_title'),
+		reply_markup:
+			Markup.inlineKeyboard([
+				Markup.callbackButton('✖️ '+ctx.translate('setting_menu_item_nothing'), 'removeMarkup'),
+				Markup.callbackButton('👍👎 '+ctx.translate('setting_menu_item_rating')+`: ${ctx.translate(ctx.dbchat.rating_buttons)}`, 'needRating', !isGroup(ctx, () => true)),
+				Markup.callbackButton('🌐 '+ctx.translate('setting_menu_item_language'), 'changeLanguage'),
+				Markup.callbackButton('⏳ '+ctx.translate('setting_menu_item_autodelete'), 'setAutoRemoveTimeout'),
+				Markup.callbackButton('🤔 '+ctx.translate('setting_menu_item_caption')+`: ${ctx.translate(ctx.dbchat.image_caption)}`, 'toogleImageCaption'),
+			], { columns: 2 })
+	})
 
   bot.command('settings_ttp', removeMsgFrom, ctx => {
     ctx.reply('', choice_setting_markup(ctx))
   })
 
-  bot.action('toogleImageCaption', buttonClicksLimiter, ctx => { 
+  bot.action('toogleImageCaption', buttonClicksLimiter, ctx => {
     ctx.answerCbQuery(String(ctx.translate(
       ctx.dbchat.image_caption = !ctx.dbchat.image_caption
     )))
@@ -36,19 +38,19 @@ export function commandSettings (bot: Telegraf<Context>) {
 
   bot.action('removeMarkup', ctx => ctx.deleteMessage())
 
+	bot.action('backToMainMenu', buttonClicksLimiter, ctx => {
+		ctx.editMessageText('', choice_setting_markup(ctx))
+  })
+
   /* Language settings */
   bot.action('changeLanguage', buttonClicksLimiter, ctx => {
     ctx.editMessageText(ctx.translate('language_choice'), {
       reply_markup: Markup.inlineKeyboard([
-        Markup.callbackButton('<<', 'languageBack'),
+				Markup.callbackButton('<<', 'backToMainMenu'),
         Markup.callbackButton('🇺🇸', 'en'),
         Markup.callbackButton('🇷🇺', 'ru')
       ])
     })
-  })
-
-  bot.action('languageBack', buttonClicksLimiter, ctx => {
-    ctx.editMessageText('', choice_setting_markup(ctx))
   })
 
   bot.action(['ru','en'], ctx => {
@@ -61,5 +63,18 @@ export function commandSettings (bot: Telegraf<Context>) {
     } else
       ctx.answerCbQuery(ctx.translate('language_already_selected'))
   })
-  /** Language settings **/
+	/** Language settings **/
+
+	/* Auto remove timeout settings */
+	bot.action('setAutoRemoveTimeout', buttonClicksLimiter, ctx => {
+		ctx.editMessageText(ctx.translate('autoremover_choice') + ' ' + ctx.dbchat.autoremove_interval, {
+      reply_markup: Markup.inlineKeyboard([
+				Markup.callbackButton('<<', 'backToMainMenu'),
+        Markup.callbackButton(ctx.translate('autoremover_set_time_manually'), 'autoremove_apply')
+      ], { columns: 2 })
+    })
+	})
+
+	bot.action('autoremove_apply', buttonClicksLimiter, Stage.enter('removerScene'))
+	/** Auto remove timeout settings **/
 }
