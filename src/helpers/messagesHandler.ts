@@ -1,6 +1,7 @@
 import { Telegraf, Context, Markup } from 'telegraf'
 import { getPictureUrl } from '@/api'
 import { isGroup } from '@/middlewares/botChecks'
+import { addToAutoRemoverQueue, deleteFromAutoRemoverQueue } from '@/middlewares/autoRemoveAction'
 import buttonClicksLimiter from '@/middlewares/buttonClicksLimiter'
 import { randomy, buttonCounter } from './methods'
 import { errLogger } from './logger'
@@ -15,23 +16,41 @@ export function messagesHandler(bot: Telegraf<Context>) {
     const regexmsg = msg.replace(/(?:https?):\/\/[\n\S]+/g, '').match(/[a-zA-Z\s]+/g)
     if (!regexmsg) return next()
     const edited_msg = regexmsg.join(' ').replace(/\s{2,}/g, ' ').trim()
-    
+
     edited_msg.length >= 3 && getPictureUrl(edited_msg).then((res: string) => {
-      const isHideButtons = !isGroup(ctx, () => true) || !ctx.dbchat.rating_buttons
-      res && ctx.replyWithPhoto(res, {
+      const isRatingHiddenButton = !isGroup(ctx, () => true) || !ctx.dbchat.rating_buttons
+			const isAutoRemoveHiddenButton = ctx.dbchat.autoremove_interval === 0
+
+			res && ctx.replyWithPhoto(res,
+				{
           caption: !ctx.dbchat.image_caption ? '' : `_${ctx.translate('image_caption')}\\.\\.\\._` + ` *${edited_msg}*`,
           parse_mode: 'MarkdownV2',
           reply_to_message_id: ctx.message.message_id,
-          reply_markup: Markup.inlineKeyboard([
-            Markup.callbackButton( LIKES[randomy(LIKES.length)], 'like', isHideButtons),
-            Markup.callbackButton( DISLIKES[randomy(DISLIKES.length)], 'dislike', isHideButtons)
-          ])
-      }).catch(errLogger)
+					reply_markup: Markup.inlineKeyboard (
+						[
+							Markup.callbackButton( LIKES[randomy(LIKES.length)], 'like', isRatingHiddenButton ),
+							Markup.callbackButton( DISLIKES[randomy(DISLIKES.length)], 'dislike', isRatingHiddenButton ),
+							Markup.callbackButton( '💾 ' + ctx.translate('disable_autodelete'), 'disable_autodelete', isAutoRemoveHiddenButton )
+						], { columns: 2 }
+					)
+				}
+			)
+			.catch(errLogger)
+			.then(msg => {
+				const msg_id = msg?.['message_id']
+				msg_id && !isAutoRemoveHiddenButton && addToAutoRemoverQueue(ctx, msg_id)
+			})
+
     })
   })
 
   bot.action('like', buttonClicksLimiter, buttonCounter)
   bot.action('dislike', buttonClicksLimiter, buttonCounter)
+	bot.action('disable_autodelete', buttonClicksLimiter, ctx => {
+		const newMarkup = ctx.callbackQuery.message['reply_markup'].inline_keyboard.slice(0, -1)
+		ctx.editMessageCaption('💾 💾 💾 ', Markup.inlineKeyboard(newMarkup))
+		deleteFromAutoRemoverQueue(ctx, ctx.callbackQuery.message.message_id)
+	})
 }
 export function nameFeedback (bot: Telegraf<Context>) {
 }

@@ -3,7 +3,7 @@ import { Context, Markup } from 'telegraf'
 export function randomy(from: number, to: number = 0): number {
   if (to <= 0 || to < from) {
     to = to ?? 0;
-    // If to is less than from it'll swap 
+    // If to is less than from it'll swap
     [to, from] = [from, to]
   }
 
@@ -32,12 +32,15 @@ export function buttonCounter (ctx: Context) {
       text = text_parts[0] + ' x ' + part_numb
     }
     return text
-  })
+	})
+
+	const other_markups = ctx.callbackQuery.message['reply_markup'].inline_keyboard.slice(1)[0] || []
 
   ctx.editMessageReplyMarkup(
-    Markup.inlineKeyboard([
-      Markup.callbackButton(updated_list[0], 'like'),
+		Markup.inlineKeyboard([
+			Markup.callbackButton(updated_list[0], 'like'),
       Markup.callbackButton(updated_list[1], 'dislike'),
-    ])
+			...other_markups
+		], { columns: 2 })
   )
 }

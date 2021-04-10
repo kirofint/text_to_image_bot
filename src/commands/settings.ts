@@ -1,4 +1,4 @@
-import { Telegraf, Context, Markup } from "telegraf"
+import { Telegraf, Context, Markup, Stage } from "telegraf"
 import { removeMsgFrom, isGroup } from "@/middlewares/botChecks"
 import buttonClicksLimiter from "@/middlewares/buttonClicksLimiter"
 
@@ -10,9 +10,9 @@ export function commandSettings (bot: Telegraf<Context>) {
 			Markup.inlineKeyboard([
 				Markup.callbackButton('✖️ '+ctx.translate('setting_menu_item_nothing'), 'removeMarkup'),
 				Markup.callbackButton('👍👎 '+ctx.translate('setting_menu_item_rating')+`: ${ctx.translate(ctx.dbchat.rating_buttons)}`, 'needRating', !isGroup(ctx, () => true)),
-				Markup.callbackButton('🤔 '+ctx.translate('setting_menu_item_caption')+`: ${ctx.translate(ctx.dbchat.image_caption)}`, 'toogleImageCaption'),
 				Markup.callbackButton('🌐 '+ctx.translate('setting_menu_item_language'), 'changeLanguage'),
 				Markup.callbackButton('⏳ '+ctx.translate('setting_menu_item_autodelete'), 'setAutoRemoveTimeout'),
+				Markup.callbackButton('🤔 '+ctx.translate('setting_menu_item_caption')+`: ${ctx.translate(ctx.dbchat.image_caption)}`, 'toogleImageCaption'),
 			], { columns: 2 })
 	})
 
@@ -67,11 +67,14 @@ export function commandSettings (bot: Telegraf<Context>) {
 
 	/* Auto remove timeout settings */
 	bot.action('setAutoRemoveTimeout', buttonClicksLimiter, ctx => {
-		ctx.editMessageText(ctx.translate('autoremover_choice'), {
+		ctx.editMessageText(ctx.translate('autoremover_choice') + ' ' + ctx.dbchat.autoremove_interval, {
       reply_markup: Markup.inlineKeyboard([
 				Markup.callbackButton('<<', 'backToMainMenu'),
-      ])
+        Markup.callbackButton(ctx.translate('autoremover_set_time_manually'), 'autoremove_apply')
+      ], { columns: 2 })
     })
 	})
+
+	bot.action('autoremove_apply', buttonClicksLimiter, Stage.enter('removerScene'))
 	/** Auto remove timeout settings **/
 }
