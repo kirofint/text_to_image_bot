@@ -1,5 +1,5 @@
 import { Context } from 'telegraf'
-import { errLogger } from '@/helpers/logger'
+import logger from '@/helpers/logger'
 
 const cooldown_list = {}
 export default (ctx: Context, next: () => any): void => {
@@ -7,10 +7,10 @@ export default (ctx: Context, next: () => any): void => {
     ctx.session.buttonClicksCounter[ctx.from.id] ??= 0
     const counter = ++ctx.session.buttonClicksCounter[ctx.from.id]
     const uid = ctx.from.id
-    
+
     if (counter < 13) return next()
     if (counter > 18) ctx.answerCbQuery(ctx.translate('rating_many_clicks'), true)
-    
+
     if (uid in cooldown_list === false) {
       ctx.answerCbQuery(ctx.translate('rating_too_many_clicks'))
       cooldown_list[uid] =
@@ -21,6 +21,6 @@ export default (ctx: Context, next: () => any): void => {
         }, 7000)
     }
   } catch(e) {
-    errLogger(e)
+    logger(e)
   }
 }

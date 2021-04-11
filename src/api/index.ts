@@ -1,4 +1,4 @@
-import { errLogger } from '@/helpers/logger';
+import logger from '@/helpers/logger';
 import axios from 'axios'
 import FormData from 'form-data'
 
@@ -19,7 +19,7 @@ export async function getPictureUrl(text: string) {
 
     return response
   } catch (error) {
-    errLogger(error)
+    logger(error)
     return false
   }
 }

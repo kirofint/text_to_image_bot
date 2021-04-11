@@ -4,7 +4,7 @@ import { isGroup } from '@/middlewares/botChecks'
 import { addToAutoRemoverQueue, deleteFromAutoRemoverQueue } from '@/middlewares/autoRemoveAction'
 import buttonClicksLimiter from '@/middlewares/buttonClicksLimiter'
 import { randomy, buttonCounter } from './methods'
-import { errLogger } from './logger'
+import logger from './logger'
 
 const LIKES = ["❤️", "🧡", "💛", "💚", "💙", "💜", "🖤", "🤍", "🤎", "😏", "👌"]
 const DISLIKES = ["👎🏻", "👎🏾", "💩", "😐", "😬", "💀", "😑", "🤯", "👹", "🤪"]
@@ -35,7 +35,7 @@ export function messagesHandler(bot: Telegraf<Context>) {
 					)
 				}
 			)
-			.catch(errLogger)
+			.catch(logger)
 			.then(msg => {
 				const msg_id = msg?.['message_id']
 				msg_id && !isAutoRemoveHiddenButton && addToAutoRemoverQueue(ctx, msg_id)

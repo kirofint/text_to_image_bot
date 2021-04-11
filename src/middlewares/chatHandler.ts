@@ -1,6 +1,6 @@
 import { Context } from "telegraf"
 import { findOrCreate, updateChat } from '@/models/Chat'
-import { errLogger } from '@/helpers/logger'
+import logger from '@/helpers/logger'
 import { languages } from '@/helpers/language'
 
 export default async (ctx: Context, next: () => void) => {
@@ -10,9 +10,9 @@ export default async (ctx: Context, next: () => void) => {
     const word_value =
       languages[data.language]?.[key] ||
       languages['en']?.[key]
-    
+
     if (!word_value) {
-      errLogger(Error(`The word was not defined: ${key}`))
+      logger(Error(`The word was not defined: ${key}`))
       return 'Something wrong with translate 😒'
     }
     return word_value
@@ -21,5 +21,5 @@ export default async (ctx: Context, next: () => void) => {
     updateChat(data, prop)
   }
 
-  next()
+  return next()
 }

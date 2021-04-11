@@ -14,7 +14,6 @@ export function autoRemoving (ctx: Context, next: () => any) {
 
 	for (let msg_id in remove_stack['queue']) {
 		setTimeout(() => {
-			console.log(msg_id)
 			if (msg_id in remove_stack['to_remove']) {
 				ctx.deleteMessage(+msg_id)
 				deleteFromAutoRemoverQueue(ctx, +msg_id)
