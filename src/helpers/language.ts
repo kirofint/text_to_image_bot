@@ -8,8 +8,8 @@ const ru = {
   image_caption: "Я думаю что это",
 	disable_autodelete: "Не трогать автоудалятором",
 
-  rating_many_clicks: "Остынь",
-  rating_too_many_clicks: "Астановитесь",
+  limiter_many_clicks: "Остынь",
+  limiter_too_many_clicks: "Астановитесь",
 
   setting_menu_title: "Пожалуйста, выбирайте что хотите настроить",
   setting_menu_item_nothing: "Ничего",
@@ -40,8 +40,8 @@ const en = {
 	image_caption: "I think, it's",
 	disable_autodelete: "Don't delete it",
 
-  rating_many_clicks: "just relax",
-  rating_too_many_clicks: "stop fucking clicking",
+  limiter_many_clicks: "just relax",
+  limiter_too_many_clicks: "stop fucking clicking",
 
   setting_menu_title: 'Please, select a setting you want',
   setting_menu_item_nothing: "Nothing",
