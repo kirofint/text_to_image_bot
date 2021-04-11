@@ -17,6 +17,7 @@ yarn serve
 
 # Environment variables
 
+- `ADMIN_ID` — Your telegram id. You may get it, with `ctx.from` command
 - `TOKEN` — Telegram bot token
 - `MONGO` — URL of the mongo database
 - `API_KEY` — you might get it [here](https://deepai.org/machine-learning-model/text2img)
