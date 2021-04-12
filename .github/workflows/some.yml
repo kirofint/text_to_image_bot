@@ -9,7 +9,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      GITHUB_REPONAME: toJson(${{ github.event.repository }})
+      GITHUB_REPONAME: ${{ toJson(github.event.repository) }}
     steps:
       - name: first
         run: | 
