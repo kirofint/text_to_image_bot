@@ -2,6 +2,9 @@ name: ci
 
 on: workflow_dispatch
 
+env:
+  DOCKERHUB_URL: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPOSITORYNAME }}:${{ github.sha }} 
+  
 jobs:
   docker_push:
     runs-on: ubuntu-latest
@@ -14,7 +17,7 @@ jobs:
         uses: docker/setup-buildx-action@v1
       -
         name: Login to DockerHub
-        uses: docker/login-action@v1 
+        uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
@@ -24,7 +27,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPOSITORYNAME }}:${{ github.sha }} 
+          tags: ${{ env.DOCKERHUB_URL }}
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}  
@@ -32,19 +35,22 @@ jobs:
   docker_run:
     runs-on: self-hosted
     needs: docker_push
+    env:
+      GITHUB_REPOSITORYNAME: ${{ github.event.repository.name }}
     steps:
     - name: Remove previous version
       timeout-minutes: 120
       run: |
-          docker stop text_to_picture_bot || true
-          docker rm text_to_picture_bot || true
+          docker stop $GITHUB_REPOSITORYNAME || true
+          docker rm $GITHUB_REPOSITORYNAME || true
     - name: Docker start
       timeout-minutes: 180
       run: |
         docker run -d \
-        --link kirill_mongo:mongo \
+        --link mongo_${{ github.event.repository.owner.login }}:mongo \
         -e API_KEY=${{ secrets.API_KEY }} \
         -e TOKEN=${{ secrets.TOKEN }} \
         -e MONGO=${{ secrets.MONGO }} \
-        --name text_to_picture_bot \
-        ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPOSITORYNAME }}:${{ github.sha }}
+        -e ADMIN_ID=${{ secrets.ADMIN_ID }} \
+        --name $GITHUB_REPOSITORYNAME \
+        $DOCKERHUB_URL
