@@ -36,7 +36,7 @@ jobs:
     runs-on: self-hosted
     needs: docker_push
     env:
-      GITHUB_REPONAME: ${{ github.event.repository.name }}
+      GITHUB_REPOSITORYNAME: ${{ github.event.repository.name }}
     steps:
     - name: Remove previous version
       timeout-minutes: 120
