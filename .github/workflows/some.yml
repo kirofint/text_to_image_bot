@@ -1,0 +1,15 @@
+name: some
+
+on:   
+  push:
+    branches:
+      - docker
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_REPONAME: ${{ github.event.repository.name }}
+    steps:
+      run: | 
+          echo $GITHUB_REPONAME
