@@ -9,7 +9,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      GITHUB_REPONAME: ${{ github.event.repository.name }}
+      GITHUB_REPONAME: ${{ github.event.repository }}
     steps:
       - name: first
         run: | 
