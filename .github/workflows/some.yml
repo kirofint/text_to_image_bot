@@ -9,7 +9,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      REPO_NAME: ${{ github.event.repository.name }}
+      GITHUB_REPONAME: ${{ github.event.repository.name }}
+      GITHUB_USERNAME: ${{ github.actor }}
     steps:
       - run: |
-            echo $REPO_NAME
+            echo $GITHUB_REPONAME
+            echo $GITHUB_USERNAME
