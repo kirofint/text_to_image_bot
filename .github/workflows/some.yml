@@ -13,4 +13,4 @@ jobs:
     steps:
       - name: first
         run: | 
-            echo $GITHUB_REPONAME
+            echo toJson($GITHUB_REPONAME)
