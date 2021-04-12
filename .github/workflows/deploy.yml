@@ -41,8 +41,8 @@ jobs:
     - name: Remove previous version
       timeout-minutes: 120
       run: |
-          docker stop $GITHUB_REPONAME || true
-          docker rm $GITHUB_REPONAME || true
+          docker stop $GITHUB_REPOSITORYNAME || true
+          docker rm $GITHUB_REPOSITORYNAME || true
     - name: Docker start
       timeout-minutes: 180
       run: |
@@ -52,5 +52,5 @@ jobs:
         -e TOKEN=${{ secrets.TOKEN }} \
         -e MONGO=${{ secrets.MONGO }} \
         -e ADMIN_ID=${{ secrets.ADMIN_ID }} \
-        --name $GITHUB_REPONAME \
+        --name $GITHUB_REPOSITORYNAME \
         $DOCKERHUB_URL
