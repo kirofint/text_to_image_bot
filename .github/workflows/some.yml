@@ -8,6 +8,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      REPO_NAME: ${{ github.event.repository.name }}
     steps:
       - run: |
-            echo ${{ github.event.repository.name }}
+            echo $REPO_NAME
