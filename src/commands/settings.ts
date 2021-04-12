@@ -4,7 +4,7 @@ import buttonClicksLimiter from "@/middlewares/buttonClicksLimiter"
 import logger from "@/helpers/logger"
 
 
-export function commandSettings (bot: Telegraf<Context>) {
+export default (bot: Telegraf<Context>): void => {
 	function choice_setting_markup (ctx: Context) {
 		const markup_body = [ctx.translate('setting_menu_title'),
 			{

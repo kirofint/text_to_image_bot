@@ -1,8 +1,8 @@
 import { Telegraf, Context } from 'telegraf'
 import { removeMsgFrom } from "@/middlewares/botChecks"
 
-export function commandRun (bot: Telegraf<Context>) {
-  bot.command(['help', 'start'], removeMsgFrom, ctx => {
+export default (bot: Telegraf<Context>): void => {
+  bot.command(['help', 'start'], removeMsgFrom, (ctx: Context) => {
     ctx.replyWithHTML( ctx.translate('greeting') )
   })
 }

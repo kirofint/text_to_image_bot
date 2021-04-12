@@ -6,8 +6,8 @@ import bot from './helpers/bot'
 import chatHandler from './middlewares/chatHandler'
 import { autoRemoving } from './middlewares/autoRemoveAction'
 import { autoRemoveScene } from './helpers/scenes'
-import { commandRun } from './commands/help'
-import { commandSettings } from './commands/settings'
+import commandGreeting from './commands/greeting'
+import commandSettings from './commands/settings'
 import { messagesHandler, nameFeedback } from './helpers/messagesHandler'
 import { greetingMessage } from './helpers/messagesHandler'
 
@@ -18,7 +18,7 @@ const stage = new Stage([autoRemoveScene], { ttl: 300 })
 bot.use(stage.middleware())
 
 // Commands
-commandRun(bot)
+commandGreeting(bot)
 commandSettings(bot)
 // Helpers
 messagesHandler(bot)

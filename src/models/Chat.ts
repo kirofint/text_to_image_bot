@@ -7,7 +7,7 @@ export class Chat {
   language: string
   @prop({ required: true, default: true })
   rating_buttons: boolean
-  @prop({ required: true, default: true })
+  @prop({ default: true })
   image_caption: boolean
   @prop({ required: true, default: 0 })
   autoremove_interval: number
