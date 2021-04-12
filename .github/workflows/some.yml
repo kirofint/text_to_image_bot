@@ -10,4 +10,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
-            echo ${{ github.repository.name }}
+            echo ${{ github.event.repository.name }}
