@@ -11,5 +11,6 @@ jobs:
     env:
       GITHUB_REPONAME: ${{ github.event.repository.name }}
     steps:
-      run: | 
-          echo $GITHUB_REPONAME
+      - name: first
+        run: | 
+            echo $GITHUB_REPONAME
