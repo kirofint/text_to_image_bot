@@ -1,4 +1,6 @@
-import { Telegraf, Context, session } from 'telegraf'
+import { Telegraf, Context, session, Stage } from 'telegraf'
+import botSettings from '@/middlewares/botSettings'
+import { autoRemoveScene } from './scenes'
 import logger from './logger'
 
 const bot = new Telegraf(process.env.TOKEN)
@@ -8,6 +10,11 @@ bot.use(session(), (ctx: Context, next: () => any) => {
   ctx.session.autoRemoverQueue ??= { queue: {}, to_remove: {} }
   return next()
 })
+
+bot.use(botSettings)
+
+const stage = new Stage([autoRemoveScene], { ttl: 300 })
+bot.use(stage.middleware())
 
 bot.catch(logger)
 

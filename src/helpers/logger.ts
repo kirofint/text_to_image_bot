@@ -34,10 +34,10 @@ function saveLogAsFile (log: string): void {
 
 export default ({ stack }: Error): void => {
   if (!stack) return;
-  const errLog = `[${ new Date().toLocaleString() }] ${ stack }\r\n`;
+	const errLog = `[${ new Date().toLocaleString() }] ${ stack }\r\n`
 
   if (!ADMIN_ID) return saveLogAsFile(errLog)
   errorsToReport.push(errLog)
 }
 
-ADMIN_ID && setInterval(sendLogToMessage, 60 * 10000)
+ADMIN_ID && setInterval(sendLogToMessage, 15000)
