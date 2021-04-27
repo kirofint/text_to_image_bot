@@ -10,11 +10,15 @@ const LIKES = ["❤️", "🧡", "💛", "💚", "💙", "💜", "🖤", "🤍",
 const DISLIKES = ["👎🏻", "👎🏾", "💩", "😐", "😬", "💀", "😑", "🤯", "👹", "🤪"]
 
 export function messagesHandler(bot: Telegraf<Context>) {
-  bot.on('message', (ctx, next) => {
+  bot.on('message', (ctx: Context, next: () => void) => {
     const msg = ctx.message?.caption || ctx.message?.text
-    if (!msg) return next()
-    const regexmsg = msg.replace(/(?:https?):\/\/[\n\S]+/g, '').match(/[a-zA-Z\s]+/g)
-    if (!regexmsg) return next()
+		if (!msg) return next()
+		if (
+			(ctx.message.entities || ctx.message.caption_entities)?.some(item => item.type === 'text_link')
+		) return next()
+		const regexmsg = msg.match(/[a-zA-Z\s]+/g)
+		if (!regexmsg) return next()
+
     const edited_msg = regexmsg.join(' ').replace(/\s{2,}/g, ' ').trim()
 
     edited_msg.length >= 3 && getPictureUrl(edited_msg).then((res: string) => {
@@ -51,8 +55,6 @@ export function messagesHandler(bot: Telegraf<Context>) {
 		ctx.editMessageCaption('💾 💾 💾 ', Markup.inlineKeyboard(newMarkup))
 		deleteFromAutoRemoverQueue(ctx, ctx.callbackQuery.message.message_id)
 	})
-}
-export function nameFeedback (bot: Telegraf<Context>) {
 }
 
 export function greetingMessage (bot: Telegraf<Context>) {
