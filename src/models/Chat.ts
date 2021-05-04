@@ -11,6 +11,8 @@ export class Chat {
   image_caption: boolean
   @prop({ required: true, default: 0 })
   autoremove_interval: number
+  @prop({ required: true, default: 100 })
+  trigger_interval: number
 
   _id?: string
 }
