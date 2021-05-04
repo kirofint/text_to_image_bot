@@ -9,7 +9,7 @@ export function deleteFromAutoRemoverQueue (ctx: Context, msg_id?: number) {
 }
 
 export function autoRemoving (ctx: Context, next: () => any) {
-	if (ctx.dbchat.autoremove_interval === 0) return next()
+	if (ctx.dbchat.autoremove_interval == 0) return next()
 	const remove_stack = ctx.session.autoRemoverQueue
 
 	for (let msg_id in remove_stack['queue']) {
