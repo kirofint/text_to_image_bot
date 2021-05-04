@@ -15,6 +15,7 @@ export default (bot: Telegraf<Context>): void => {
 						Markup.callbackButton('🌐 ' + ctx.translate('setting_menu_item_language'), 'changeLanguage'),
 						Markup.callbackButton('⏳ ' + ctx.translate('setting_menu_item_autodelete'), 'setAutoRemoveTimeout'),
 						Markup.callbackButton('🤔 ' + ctx.translate('setting_menu_item_caption') + `: ${ctx.translate(ctx.dbchat.image_caption)}`, 'toogleImageCaption'),
+						Markup.callbackButton('🕑 ' + ctx.translate('setting_menu_item_interval'), 'setTriggerInterval'),
 					], { columns: 2 })
 			}
 		]
@@ -30,7 +31,7 @@ export default (bot: Telegraf<Context>): void => {
 		))
     ctx.updateProperty('image_caption')
     choice_setting_markup(ctx)
-  })
+	})
 
   bot.action('needRating', buttonClicksLimiter, ctx => {
     ctx.answerCbQuery(ctx.translate(
@@ -72,11 +73,25 @@ export default (bot: Telegraf<Context>): void => {
 		ctx.editMessageText(ctx.translate('autoremover_choice') + ' ' + ctx.dbchat.autoremove_interval, {
       reply_markup: Markup.inlineKeyboard([
 				Markup.callbackButton('<<', 'backToMainMenu'),
-        Markup.callbackButton(ctx.translate('autoremover_set_time_manually'), 'autoremove_apply')
+        Markup.callbackButton(ctx.translate('autoremover_set_time_manually'), 'autoremove_change')
       ], { columns: 2 })
     }).catch(logger)
 	})
 
-	bot.action('autoremove_apply', buttonClicksLimiter, Stage.enter('removerScene'))
+	bot.action('autoremove_change', buttonClicksLimiter, Stage.enter('removerScene'))
 	/** Auto remove timeout settings **/
+
+	/* Trigger interval timeout settings */
+	bot.action('setTriggerInterval', buttonClicksLimiter, ctx => {
+		ctx.editMessageText(ctx.translate('trigger_interval_choice') + ' `' + ctx.dbchat.trigger_interval + '%`', {
+			parse_mode: 'MarkdownV2',
+      reply_markup: Markup.inlineKeyboard([
+				Markup.callbackButton('<<', 'backToMainMenu'),
+        Markup.callbackButton(ctx.translate('trigger_interval_set_percent_manually'), 'trigger_interval_change')
+      ], { columns: 2 })
+    }).catch(logger)
+	})
+
+	bot.action('trigger_interval_change', buttonClicksLimiter, Stage.enter('intervalScene'))
+	/** Trigger interval timeout settings **/
 }
